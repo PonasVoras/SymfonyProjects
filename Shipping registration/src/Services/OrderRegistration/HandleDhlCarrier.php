@@ -10,8 +10,6 @@ class HandleDhlCarrier implements HandleCarrierInterfaceStrategy
 {
     const REGISTER_URI = 'dhlfake.com/register';
 
-
-
     public function formShippingDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(

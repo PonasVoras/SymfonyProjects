@@ -15,6 +15,9 @@ class Registration
     private $logger;
     private $orderEntity;
     private $orderRegistrationApi;
+    const CARRIER_OMNIVA = 'omniva';
+    const CARRIER_DHL = 'dhl';
+    const CARRIER_UPS = 'ups';
 
     public function __construct(
         Logger $logger,
@@ -32,17 +35,16 @@ class Registration
         $carrierName = $this->orderEntity->getShippingCarrierName();
         $carrierName = trim($carrierName);
         $carrierName = strtolower($carrierName);
-        $carrierName = ucfirst($carrierName);
         $this->registerByShippingCarrier($carrierName);
     }
 
     public function pickHandlerByShippingCarrier(string $carrierName)
     {
-        if ($carrierName == 'Omniva') {
+        if ($carrierName == self::CARRIER_OMNIVA) {
             $handler = new HandleOmnivaCarrier($this->logger);
-        } elseif ($carrierName == 'Dhl') {
+        } elseif ($carrierName == self::CARRIER_DHL) {
             $handler = new HandleDhlCarrier();
-        } elseif ($carrierName == 'Ups') {
+        } elseif ($carrierName == self::CARRIER_UPS) {
             $handler = new HandleUpsCarrier();
         }
         $this->logger->info('Handling ' . $carrierName . ' carrier');
