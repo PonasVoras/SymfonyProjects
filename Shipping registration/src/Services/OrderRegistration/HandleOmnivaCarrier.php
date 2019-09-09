@@ -24,13 +24,14 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
     }
 
     /**
+     * @param OrderEntity $orderEntity
      * @return string
-     * //* @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    protected function getPickupPointIdFromApi(): string
+    protected function getPickupPointIdFromApi(OrderEntity $orderEntity): string
     {
         $responseDataFromApi = $this->orderRegistrationApi
-            ->getResponseData($this->formPickupPointDataJson(), self::PICKUP_POINT_ID_URI);
+            ->getResponseData($this->formPickupPointDataJson($orderEntity), self::PICKUP_POINT_ID_URI);
         $responseDataFromApi = json_decode($responseDataFromApi, true);
         $pickupPointId = $responseDataFromApi['status'];
         //in fact it should be :
@@ -50,10 +51,15 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         return $shippingDataJson;
     }
 
+    /**
+     * @param OrderEntity $orderEntity
+     * @return string
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function formShippingDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
-            'pickup_point_id' => $this->getPickupPointIdFromApi(),
+            'pickup_point_id' => $this->getPickupPointIdFromApi($orderEntity),
             'order_id' => $orderEntity->getId()
         );
         $shippingDataJson = json_encode($shippingData);

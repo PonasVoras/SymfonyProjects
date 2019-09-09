@@ -62,7 +62,7 @@ class Registration
         }
     }
 
-    public function sendRegistrationRequest($registrationRequestData, $uri)
+    public function sendRegistrationRequest(string $registrationRequestData,string $uri)
     {
         $this->logger->info('RequestJson : ' . $registrationRequestData);
         $registrationResponseData = $this->orderRegistrationApi
