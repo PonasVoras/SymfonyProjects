@@ -26,7 +26,7 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 
     /**
      * @return string
-     //* @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * //* @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     protected function getPickupPointIdFromApi(): string
     {

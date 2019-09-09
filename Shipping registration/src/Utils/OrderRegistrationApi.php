@@ -10,7 +10,7 @@ class OrderRegistrationApi
      * @param string $requestData
      * @param string $uri
      * @return false|string|\Symfony\Contracts\HttpClient\ResponseInterface
-    // * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * // * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function getResponseData(string $requestData, string $uri)
     {
@@ -20,7 +20,7 @@ class OrderRegistrationApi
         //]);
         //$responseStatus = $response->getStatusCode();
         $responseData = array(
-        //    'status' => $responseStatus
+            //    'status' => $responseStatus
             'status' => '200'
         );
         $response = json_encode($responseData);

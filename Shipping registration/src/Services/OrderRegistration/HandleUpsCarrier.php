@@ -4,7 +4,6 @@ namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
-use App\Utils\OrderRegistrationApi;
 
 class HandleUpsCarrier implements HandleCarrierInterfaceStrategy
 {

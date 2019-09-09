@@ -3,8 +3,8 @@
 namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
-use Psr\Log\LoggerInterface as Logger;
 use App\Utils\OrderRegistrationApi;
+use Psr\Log\LoggerInterface as Logger;
 
 class Registration
 {
@@ -32,19 +32,26 @@ class Registration
         $this->registerByShippingCarrier($carrierName);
     }
 
-    public function registerByShippingCarrier(string $carrierName)
+    public function pickHandlerByShippingCarrier(string $carrierName)
     {
+        $handler = "";
         if ($carrierName == 'Omniva') {
-            $registration = new HandleOmnivaCarrier($this->logger);
+            $handler = new HandleOmnivaCarrier($this->logger);
         } elseif ($carrierName == 'Dhl') {
-            $registration = new HandleDhlCarrier();
+            $handler = new HandleDhlCarrier();
         } elseif ($carrierName == 'Ups') {
-            $registration = new HandleUpsCarrier();
+            $handler = new HandleUpsCarrier();
         }
         $this->logger->info('Handling ' . $carrierName . ' carrier');
-        if (!empty($registration)){
-            $registrationRequestData = $registration->formShippingDataJson();
-            $uri = $registration::REGISTER_URI;
+        return $handler;
+    }
+
+    public function registerByShippingCarrier(string $carrierName)
+    {
+        $handler = $this->pickHandlerByShippingCarrier($carrierName);
+        if (!empty($handler)) {
+            $registrationRequestData = $handler->formShippingDataJson();
+            $uri = $handler::REGISTER_URI;
             $this->sendRegistrationRequest($registrationRequestData, $uri);
         } else {
             $this->logger->info('Services do not support this carrier : '
@@ -59,7 +66,7 @@ class Registration
             ->getResponseData($registrationRequestData, $uri);
         $registrationResponseData = json_decode($registrationResponseData, true);
         $registrationResponse = $registrationResponseData['status'];
-        if ($registrationResponse == '200'){
+        if ($registrationResponse == '200') {
             $this->logger->info('Registration was successful');
         } else {
             $this->logger->info('RegistrationApiReturned : '
