@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Utils\OrderRegistrationApi;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface as Logger;
+use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
 
 class Registration
 {
@@ -34,7 +38,6 @@ class Registration
 
     public function pickHandlerByShippingCarrier(string $carrierName)
     {
-        $handler = "";
         if ($carrierName == 'Omniva') {
             $handler = new HandleOmnivaCarrier($this->logger);
         } elseif ($carrierName == 'Dhl') {
@@ -50,7 +53,7 @@ class Registration
     {
         $handler = $this->pickHandlerByShippingCarrier($carrierName);
         if (!empty($handler)) {
-            $registrationRequestData = $handler->formShippingDataJson();
+            $registrationRequestData = $handler->formShippingDataJson($this->orderEntity);
             $uri = $handler::REGISTER_URI;
             $this->sendRegistrationRequest($registrationRequestData, $uri);
         } else {

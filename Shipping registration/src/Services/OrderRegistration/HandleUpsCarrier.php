@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\OrderRegistration;
 
@@ -7,22 +8,16 @@ use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 
 class HandleUpsCarrier implements HandleCarrierInterfaceStrategy
 {
-    protected $orderEntity;
     const REGISTER_URI = 'upsfake.com/register';
 
-    public function __construct()
-    {
-        $this->orderEntity = new OrderEntity();
-    }
-
-    public function formShippingDataJson(): string
+    public function formShippingDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
-            'order_id' => $this->orderEntity->getId(),
-            'country' => $this->orderEntity->getCountry(),
-            'street' => $this->orderEntity->getStreet(),
-            'city' => $this->orderEntity->getCity(),
-            'post_code' => $this->orderEntity->getPostCode()
+            'order_id' => $orderEntity->getId(),
+            'country' => $orderEntity->getCountry(),
+            'street' => $orderEntity->getStreet(),
+            'city' => $orderEntity->getCity(),
+            'post_code' => $orderEntity->getPostCode()
         );
         $shippingDataJson = json_encode($shippingData);
         return $shippingDataJson;

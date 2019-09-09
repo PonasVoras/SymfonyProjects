@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\OrderRegistration;
 
@@ -9,7 +10,6 @@ use Psr\Log\LoggerInterface;
 
 class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 {
-    protected $orderEntity;
     private $orderRegistrationApi;
     private $logger;
     const PICKUP_POINT_ID_URI = 'omnivafake.com/pickup/find';
@@ -19,7 +19,6 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         LoggerInterface $logger
     )
     {
-        $this->orderEntity = new OrderEntity();
         $this->orderRegistrationApi = new OrderRegistrationApi();
         $this->logger = $logger;
     }
@@ -41,21 +40,21 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         return $pickupPointId;
     }
 
-    protected function formPickupPointDataJson(): string
+    protected function formPickupPointDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
-            'country' => $this->orderEntity->getCountry(),
-            'post_code' => $this->orderEntity->getPostCode()
+            'country' => $orderEntity->getCountry(),
+            'post_code' => $orderEntity->getPostCode()
         );
         $shippingDataJson = json_encode($shippingData);
         return $shippingDataJson;
     }
 
-    public function formShippingDataJson(): string
+    public function formShippingDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
             'pickup_point_id' => $this->getPickupPointIdFromApi(),
-            'order_id' => $this->orderEntity->getId()
+            'order_id' => $orderEntity->getId()
         );
         $shippingDataJson = json_encode($shippingData);
         return $shippingDataJson;
