@@ -5,19 +5,19 @@ namespace App\Entity;
 class Order
 {
     /** @var string */
-    private $id;
+    private $id = "";
 
     /** @var string */
-    private $street;
+    private $street = "";
 
     /** @var string */
-    private $postCode;
+    private $postCode = "";
 
     /** @var string */
-    private $city;
+    private $city = "";
 
     /** @var string */
-    private $country;
+    private $country = "";
 
     /** @var string */
     private $shippingName;
@@ -52,6 +52,6 @@ class Order
         empty($this->shippingName) ?
             $shippingCarrierName = 'ups' :
             $shippingCarrierName = $this->shippingName;
-        return 'asasass';
+        return $shippingCarrierName;
     }
 }
