@@ -50,7 +50,7 @@ class Order
     public function getShippingCarrierName(): string
     {
         empty($this->shippingName) ?
-            $shippingCarrierName = 'ups' :
+            $shippingCarrierName = 'upS ' :
             $shippingCarrierName = $this->shippingName;
         return $shippingCarrierName;
     }
