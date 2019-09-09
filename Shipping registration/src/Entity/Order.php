@@ -22,22 +22,22 @@ class Order
     /** @var string */
     private $shippingName;
 
-    public function getOrderId(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getOrderStreet(): string
+    public function getStreet(): string
     {
         return $this->street;
     }
 
-    public function getOrderPostCode(): string
+    public function getPostCode(): string
     {
         return $this->postCode;
     }
 
-    public function getOrderCity(): string
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -52,6 +52,6 @@ class Order
         empty($this->shippingName) ?
             $shippingCarrierName = 'ups' :
             $shippingCarrierName = $this->shippingName;
-        return $shippingCarrierName;
+        return 'asasass';
     }
 }

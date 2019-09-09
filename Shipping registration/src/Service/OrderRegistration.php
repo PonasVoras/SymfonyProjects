@@ -5,20 +5,30 @@ namespace App\Service;
 use Psr\Log\LoggerInterface as Logger;
 use App\Entity\Order as OrderEntity;
 
-class OrderRegistration extends OrderEntity
+class OrderRegistration
 {
     private $logger;
 
-    public function __construct(Logger $logger)
+      private $orderEntity;
+
+    public function __construct(
+        Logger $logger
+         //OrderEntity $orderEntity
+    )
     {
         $this->logger = $logger;
+        // $this->orderEntity = $orderEntity;
+
     }
 
-    public function handleOrderRegistration(OrderEntity $orderEntity){
-        $this->logger->info($orderEntity->);
+    public function handleOrderRegistration()
+    {
+        $this->logger->info('I am alive');
+        //$this->logger->info(gettype($this->orderEntity->getShippingCarrierName()));
     }
 
-    public function handleShippingCarrier(){
+    public function handleShippingCarrier()
+    {
 
     }
 
@@ -27,11 +37,13 @@ class OrderRegistration extends OrderEntity
 
     }
 
-    public function registerOrderDhl(){
+    public function registerOrderDhl()
+    {
 
     }
 
-    public function registerOrderOmniva(){
+    public function registerOrderOmniva()
+    {
 
     }
 }
