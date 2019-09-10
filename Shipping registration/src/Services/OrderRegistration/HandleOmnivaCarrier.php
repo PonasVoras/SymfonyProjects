@@ -5,60 +5,49 @@ namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
-use App\Utils\OrderRegistrationApi\RegistrationApi;
-use Psr\Log\LoggerInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 {
-    private $orderRegistrationApi;
-    private $logger;
-    const PICKUP_POINT_ID_URI = 'omnivafake.com/pickup/find';
     const REGISTER_URI = 'omnivafake.com/register';
+    const TOKEN = 'token';
+    private $preHandleOmnivaCarrier;
 
     public function __construct(
-        LoggerInterface $logger
+        PreHandleOmnivaCarrier $preHandleOmnivaCarrier
     )
     {
-        $this->orderRegistrationApi = new RegistrationApi();
-        $this->logger = $logger;
+        $this->preHandleOmnivaCarrier = $preHandleOmnivaCarrier;
     }
 
-    protected function getPickupPointIdFromApi(OrderEntity $orderEntity): string
+    private function getPickupPointId(OrderEntity $orderEntity)
     {
-        $responseDataFromApi = $this->orderRegistrationApi
-            ->getResponseData($this->formPickupPointDataJson($orderEntity), self::PICKUP_POINT_ID_URI);
-        $responseDataFromApi = json_decode($responseDataFromApi, true);
-        $pickupPointId = $responseDataFromApi['status'];
-        //in fact it should be :
-        //$pickupPointId = $responseDataFromApi['pickup_point_id'];
-        //but it is required to keep it as static as can be
-        $this->logger->info('Received pickup point id ' . $pickupPointId);
+        $pickupPointId = $this->preHandleOmnivaCarrier
+            ->getPickupPointId($orderEntity);
         return $pickupPointId;
     }
 
-    protected function formPickupPointDataJson(OrderEntity $orderEntity): string
+    public function prepareRequestDataJson(OrderEntity $orderEntity): string
     {
-        $shippingData = array(
-            'country' => $orderEntity->getCountry(),
-            'post_code' => $orderEntity->getPostCode()
-        );
-        $shippingDataJson = json_encode($shippingData);
-        return $shippingDataJson;
-    }
-
-    public function formShippingDataJson(OrderEntity $orderEntity): string
-    {
-        $shippingData = array(
-            'pickup_point_id' => $this->getPickupPointIdFromApi($orderEntity),
+        $requestData = array(
+            'pickup_point_id' => $this->getPickupPointId($orderEntity),
             'order_id' => $orderEntity->getId()
         );
-        $shippingDataJson = json_encode($shippingData);
-        return $shippingDataJson;
+        $requestDataJson = json_encode($requestData);
+        return $requestDataJson;
     }
 
     public function canHandleCarrier(string $carrierName)
     {
         // TODO: Implement canHandleCarrier() method.
+    }
+
+    public function getUri(): string
+    {
+        return self::REGISTER_URI;
+    }
+
+    public function getToken(): string
+    {
+        return self::TOKEN;
     }
 }

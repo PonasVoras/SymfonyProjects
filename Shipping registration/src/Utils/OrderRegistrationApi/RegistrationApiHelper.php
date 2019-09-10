@@ -1,28 +1,46 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Utils\OrderRegistrationApi;
 
+use App\Entity\Order as OrderEntity;
+use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
+
+
+// TODO Get handler data and put them intp request parameter
 class RegistrationApiHelper
 {
-    private $responseData;
+    private $registrationApi;
+    private $orderEntity;
+    private $requestDataArray;
 
-    public function sendRegistrationRequest(
-        string $requestData,
-        string $uri,
-        string $token
-    )
+    public function __construct()
     {
-        $registrationApi = new RegistrationApi();
-        $this->responseData = $registrationApi->sendRequest(
-            $requestData, $uri, $token);
+        $this->registrationApi = new RegistrationApi();
+        $this->orderEntity = new OrderEntity();
     }
 
-    public function getResponseValue(
-        string $responseData,
-        string $value): string
+    public function register(HandleCarrierInterfaceStrategy $handler)
     {
-        $responseArray = json_decode($responseData, true);
-        $value = $responseArray[$value];
-        return $value;
+        $token = $handler->getToken();
+        $uri = $handler->getUri();
+        $
+        $this->registrationApi->sendRequest();
+    }
+
+
+    //takes handler object and prepares request data
+    public function prepareRequestData()
+    {
+
+        return $requestDataArray;
+    }
+
+    public function getResponseValue(): string
+    {
+        $responseDataJson = $this->registrationApi->sendRequest($requestData, $uri, $token);
+        $responseDataArray = json_decode($responseDataJson, true);
+        $responseValue = $responseDataArray[$value];
+        return $responseValue;
     }
 }

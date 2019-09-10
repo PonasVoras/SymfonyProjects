@@ -9,5 +9,9 @@ interface HandleCarrierInterfaceStrategy
 {
     public function canHandleCarrier(string $carrierName);
 
-    public function formShippingDataJson(OrderEntity $orderEntity): string;
+    public function prepareRequestDataJson(OrderEntity $orderEntity): string;
+
+    public function getUri(): string;
+
+    public function getToken(): string;
 }

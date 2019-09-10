@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
-use App\Utils\OrderRegistrationApi\RegistrationApi;
+use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
@@ -14,7 +14,7 @@ class Registration
 {
     private $logger;
     private $orderEntity;
-    private $orderRegistrationApi;
+    private $orderRegistrationApiHelper;
     const CARRIER_OMNIVA = 'omniva';
     const CARRIER_DHL = 'dhl';
     const CARRIER_UPS = 'ups';
@@ -24,14 +24,11 @@ class Registration
         OrderEntity $orderEntity
     )
     {
-        $this->orderRegistrationApi = new RegistrationApi();
+        $this->orderRegistrationApiHelper = new RegistrationApiHelper();
         $this->logger = $logger;
         $this->orderEntity = $orderEntity;
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
     public function handleOrderRegistration()
     {
         $this->logger->info('Order registration class is working');
@@ -64,28 +61,7 @@ class Registration
     public function registerByShippingCarrier(string $carrierName)
     {
         $handler = $this->pickHandlerByShippingCarrier($carrierName);
-        if (is_object($handler)){
-            $registrationRequestData = $handler->formShippingDataJson($this->orderEntity);
-            $uri = $handler::REGISTER_URI;
-            $this->sendRegistrationRequest($registrationRequestData, $uri);
-        }
-        else {
-            throw new Exception('Wrong handler object ');
-        }
-    }
-
-    public function sendRegistrationRequest(string $registrationRequestData, string $uri)
-    {
-        $this->logger->info('RequestJson : ' . $registrationRequestData);
-        $registrationResponseData = $this->orderRegistrationApi
-            ->getResponseData($registrationRequestData, $uri);
-        $registrationResponseData = json_decode($registrationResponseData, true);
-        $registrationResponse = $registrationResponseData['status'];
-        if ($registrationResponse == '200') {
-            $this->logger->info('Registration was successful');
-        } else {
-            $this->logger->info('RegistrationApiReturned : '
-                . $registrationResponse);
-        }
+        $this->orderRegistrationApiHelper->register($handler);
+        // TODO magicly provide parameters for api helper
     }
 }
