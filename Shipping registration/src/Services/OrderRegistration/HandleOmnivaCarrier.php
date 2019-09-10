@@ -5,8 +5,9 @@ namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
-use App\Utils\OrderRegistrationApi;
+use App\Utils\OrderRegistrationApi\RegistrationApi;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 {
@@ -19,15 +20,10 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         LoggerInterface $logger
     )
     {
-        $this->orderRegistrationApi = new OrderRegistrationApi();
+        $this->orderRegistrationApi = new RegistrationApi();
         $this->logger = $logger;
     }
 
-    /**
-     * @param OrderEntity $orderEntity
-     * @return string
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     */
     protected function getPickupPointIdFromApi(OrderEntity $orderEntity): string
     {
         $responseDataFromApi = $this->orderRegistrationApi
@@ -51,11 +47,6 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         return $shippingDataJson;
     }
 
-    /**
-     * @param OrderEntity $orderEntity
-     * @return string
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     */
     public function formShippingDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
@@ -64,5 +55,10 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         );
         $shippingDataJson = json_encode($shippingData);
         return $shippingDataJson;
+    }
+
+    public function canHandleCarrier(string $carrierName)
+    {
+        // TODO: Implement canHandleCarrier() method.
     }
 }

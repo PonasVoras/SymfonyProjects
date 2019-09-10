@@ -23,4 +23,8 @@ class HandleDhlCarrier implements HandleCarrierInterfaceStrategy
         return $shippingDataJson;
     }
 
+    public function canHandleCarrier(string $carrierName)
+    {
+        // TODO: Implement canHandleCarrier() method.
+    }
 }

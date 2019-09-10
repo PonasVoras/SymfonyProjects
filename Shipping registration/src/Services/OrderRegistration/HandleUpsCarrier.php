@@ -22,4 +22,9 @@ class HandleUpsCarrier implements HandleCarrierInterfaceStrategy
         $shippingDataJson = json_encode($shippingData);
         return $shippingDataJson;
     }
+
+    public function canHandleCarrier(string $carrierName)
+    {
+        // TODO: Implement canHandleCarrier() method.
+    }
 }

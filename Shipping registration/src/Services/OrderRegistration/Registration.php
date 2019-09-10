@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
-use App\Utils\OrderRegistrationApi;
-use phpDocumentor\Reflection\Types\Object_;
-use phpDocumentor\Reflection\Types\This;
+use App\Utils\OrderRegistrationApi\RegistrationApi;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Registration
 {
@@ -24,11 +24,14 @@ class Registration
         OrderEntity $orderEntity
     )
     {
-        $this->orderRegistrationApi = new OrderRegistrationApi();
+        $this->orderRegistrationApi = new RegistrationApi();
         $this->logger = $logger;
         $this->orderEntity = $orderEntity;
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function handleOrderRegistration()
     {
         $this->logger->info('Order registration class is working');
@@ -38,6 +41,10 @@ class Registration
         $this->registerByShippingCarrier($carrierName);
     }
 
+    /**
+     * @param string $carrierName
+     * @return HandleDhlCarrier|HandleOmnivaCarrier|HandleUpsCarrier
+     */
     public function pickHandlerByShippingCarrier(string $carrierName)
     {
         if ($carrierName == self::CARRIER_OMNIVA) {
@@ -46,25 +53,28 @@ class Registration
             $handler = new HandleDhlCarrier();
         } elseif ($carrierName == self::CARRIER_UPS) {
             $handler = new HandleUpsCarrier();
+        } else {
+            throw new Exception('No handler for "'
+                . $carrierName
+                . '" carrier');
         }
-        $this->logger->info('Handling ' . $carrierName . ' carrier');
         return $handler;
     }
 
     public function registerByShippingCarrier(string $carrierName)
     {
         $handler = $this->pickHandlerByShippingCarrier($carrierName);
-        if (!empty($handler)) {
+        if (is_object($handler)){
             $registrationRequestData = $handler->formShippingDataJson($this->orderEntity);
             $uri = $handler::REGISTER_URI;
             $this->sendRegistrationRequest($registrationRequestData, $uri);
-        } else {
-            $this->logger->info('Services do not support this carrier : '
-                . $carrierName);
+        }
+        else {
+            throw new Exception('Wrong handler object ');
         }
     }
 
-    public function sendRegistrationRequest(string $registrationRequestData,string $uri)
+    public function sendRegistrationRequest(string $registrationRequestData, string $uri)
     {
         $this->logger->info('RequestJson : ' . $registrationRequestData);
         $registrationResponseData = $this->orderRegistrationApi

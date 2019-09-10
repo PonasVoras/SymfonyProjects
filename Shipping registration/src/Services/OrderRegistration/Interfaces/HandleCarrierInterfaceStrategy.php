@@ -7,5 +7,7 @@ use App\Entity\Order as OrderEntity;
 
 interface HandleCarrierInterfaceStrategy
 {
+    public function canHandleCarrier(string $carrierName);
+
     public function formShippingDataJson(OrderEntity $orderEntity): string;
 }
