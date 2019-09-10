@@ -6,13 +6,11 @@ namespace App\Utils\OrderRegistrationApi;
 use App\Entity\Order as OrderEntity;
 use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 
-
-// TODO Get handler data and put them intp request parameter
 class RegistrationApiHelper
 {
     private $registrationApi;
     private $orderEntity;
-    private $requestDataArray;
+    private $responseDataJson;
 
     public function __construct()
     {
@@ -20,27 +18,19 @@ class RegistrationApiHelper
         $this->orderEntity = new OrderEntity();
     }
 
-    public function register(HandleCarrierInterfaceStrategy $handler)
+    public function forwardRequest(HandleCarrierInterfaceStrategy $handler)
     {
         $token = $handler->getToken();
         $uri = $handler->getUri();
-        $
-        $this->registrationApi->sendRequest();
+        $body = $handler->prepareRequestDataJson($this->orderEntity);
+        $responseDataJson = $this->registrationApi->sendRequest($body, $uri, $token);
+        $this->responseDataJson = $responseDataJson;
     }
 
-
-    //takes handler object and prepares request data
-    public function prepareRequestData()
+    public function getResponseValue($requiredParameter): string
     {
-
-        return $requestDataArray;
-    }
-
-    public function getResponseValue(): string
-    {
-        $responseDataJson = $this->registrationApi->sendRequest($requestData, $uri, $token);
-        $responseDataArray = json_decode($responseDataJson, true);
-        $responseValue = $responseDataArray[$value];
+        $responseDataArray = json_decode($this->responseDataJson, true);
+        $responseValue = $responseDataArray[$requiredParameter];
         return $responseValue;
     }
 }

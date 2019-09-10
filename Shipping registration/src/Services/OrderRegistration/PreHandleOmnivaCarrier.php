@@ -4,26 +4,22 @@ declare(strict_types=1);
 namespace App\Services\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
+use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
-use Psr\Log\LoggerInterface;
 
-class PreHandleOmnivaCarrier
+class PreHandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 {
-    private $logger;
     const PICKUP_POINT_ID_URI = 'omnivafake.com/pickup/find';
     const TOKEN = 'token';
     const REQUIRED_PARAMETER = 'pickup_point_id';
     private $orderRegistrationApiHelper;
 
-    public function __construct(
-        LoggerInterface $logger
-    )
+    public function __construct()
     {
         $this->orderRegistrationApiHelper = new RegistrationApiHelper();
-        $this->logger = $logger;
     }
 
-    protected function formPickupPointDataJson(OrderEntity $orderEntity): string
+    public function prepareRequestDataJson(OrderEntity $orderEntity): string
     {
         $shippingData = array(
             'country' => $orderEntity->getCountry(),
@@ -33,22 +29,36 @@ class PreHandleOmnivaCarrier
         return $shippingDataJson;
     }
 
-    protected function getPickupPointIdFromApi(string $shippingData): string
+    protected function getPickupPointIdFromApi(): string
     {
+        $this->orderRegistrationApiHelper->forwardRequest($this);
         $pickupPointId = $this->orderRegistrationApiHelper
-            ->getResponseValue(
-                $shippingData,
-                self::PICKUP_POINT_ID_URI,
-                self::TOKEN,
-                self::REQUIRED_PARAMETER);
-        $this->logger->info('Received pickup point id ' . $pickupPointId);
+            ->getResponseValue($this->getRequiredParameter());
         return $pickupPointId;
     }
 
-    public function getPickupPointId(OrderEntity $orderEntity){
-        $shippingData = $this->formPickupPointDataJson($orderEntity);
-        $pickupPointId = $this->getPickupPointIdFromApi($shippingData);
+    public function getPickupPointId(){
+        $pickupPointId = $this->getPickupPointIdFromApi();
         return $pickupPointId;
     }
 
+    public function canHandleCarrier(string $carrierName)
+    {
+        // TODO: Implement canHandleCarrier() method.
+    }
+
+    public function getUri(): string
+    {
+        return self::PICKUP_POINT_ID_URI;
+    }
+
+    public function getToken(): string
+    {
+        return self::TOKEN;
+    }
+
+    public function getRequiredParameter(): string
+    {
+        return self::REQUIRED_PARAMETER;
+    }
 }

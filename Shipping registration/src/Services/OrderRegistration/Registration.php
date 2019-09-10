@@ -45,7 +45,7 @@ class Registration
     public function pickHandlerByShippingCarrier(string $carrierName)
     {
         if ($carrierName == self::CARRIER_OMNIVA) {
-            $handler = new HandleOmnivaCarrier($this->logger);
+            $handler = new HandleOmnivaCarrier();
         } elseif ($carrierName == self::CARRIER_DHL) {
             $handler = new HandleDhlCarrier();
         } elseif ($carrierName == self::CARRIER_UPS) {
@@ -61,7 +61,7 @@ class Registration
     public function registerByShippingCarrier(string $carrierName)
     {
         $handler = $this->pickHandlerByShippingCarrier($carrierName);
-        $this->orderRegistrationApiHelper->register($handler);
+        $this->orderRegistrationApiHelper->forwardRequest($handler);
         // TODO magicly provide parameters for api helper
     }
 }

@@ -12,24 +12,22 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
     const TOKEN = 'token';
     private $preHandleOmnivaCarrier;
 
-    public function __construct(
-        PreHandleOmnivaCarrier $preHandleOmnivaCarrier
-    )
+    public function __construct()
     {
-        $this->preHandleOmnivaCarrier = $preHandleOmnivaCarrier;
+        $this->preHandleOmnivaCarrier = new PreHandleOmnivaCarrier();
     }
 
-    private function getPickupPointId(OrderEntity $orderEntity)
+    private function getPickupPointId(): string
     {
         $pickupPointId = $this->preHandleOmnivaCarrier
-            ->getPickupPointId($orderEntity);
+            ->getPickupPointId();
         return $pickupPointId;
     }
 
     public function prepareRequestDataJson(OrderEntity $orderEntity): string
     {
         $requestData = array(
-            'pickup_point_id' => $this->getPickupPointId($orderEntity),
+            'pickup_point_id' => $this->getPickupPointId(),
             'order_id' => $orderEntity->getId()
         );
         $requestDataJson = json_encode($requestData);

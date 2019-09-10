@@ -31,11 +31,11 @@ class HandleUpsCarrier implements HandleCarrierInterfaceStrategy
 
     public function getUri(): string
     {
-        // TODO: Implement getUri() method.
+        return self::REGISTER_URI;
     }
 
     public function getToken(): string
     {
-        // TODO: Implement getToken() method.
+        return self::TOKEN;
     }
 }
