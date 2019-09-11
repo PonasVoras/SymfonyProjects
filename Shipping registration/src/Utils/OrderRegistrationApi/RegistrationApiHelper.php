@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Utils\OrderRegistrationApi;
 
 use App\Entity\Order as OrderEntity;
-use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
+use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 
 class RegistrationApiHelper
 {

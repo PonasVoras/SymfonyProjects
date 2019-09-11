@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\OrderRegistration;
+namespace App\Service\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
-use App\Services\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
+use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
 
 class PreHandleOmnivaCarrier implements HandleCarrierInterfaceStrategy

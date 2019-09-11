@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Services\OrderRegistration\Registration as OrderRegistrationService;
+use App\Service\OrderRegistration\Context;
+use App\Service\OrderRegistration\Registration as OrderRegistrationService;
 use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

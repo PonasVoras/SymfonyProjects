@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\OrderRegistration\Interfaces;
+namespace App\Service\OrderRegistration\Interfaces;
 
 use App\Entity\Order as OrderEntity;
 

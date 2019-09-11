@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\OrderRegistration;
+namespace App\Service\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
