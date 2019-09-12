@@ -5,10 +5,8 @@ namespace App\Service\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Psr\Log\LoggerInterface as Logger;
-use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Registration
 {
@@ -21,10 +19,11 @@ class Registration
 
     public function __construct(
         Logger $logger,
-        OrderEntity $orderEntity
+        OrderEntity $orderEntity,
+        RegistrationApiHelper $registrationApiHelper
     )
     {
-        $this->orderRegistrationApiHelper = new RegistrationApiHelper();
+        $this->orderRegistrationApiHelper = $registrationApiHelper;
         $this->logger = $logger;
         $this->orderEntity = $orderEntity;
     }

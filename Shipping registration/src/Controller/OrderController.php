@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\OrderRegistration\Context;
 use App\Service\OrderRegistration\Registration as OrderRegistrationService;
 use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\HttpFoundation\Response;

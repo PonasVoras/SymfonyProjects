@@ -5,6 +5,7 @@ namespace App\Utils\OrderRegistrationApi;
 
 use App\Entity\Order as OrderEntity;
 use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
+use Psr\Log\LoggerInterface;
 
 class RegistrationApiHelper
 {
@@ -12,13 +13,19 @@ class RegistrationApiHelper
     private $orderEntity;
     private $responseDataJson;
 
-    public function __construct()
+    public function __construct(
+        RegistrationApi $registrationApi,
+        LoggerInterface $logger,
+        OrderEntity $orderEntity)
     {
-        $this->registrationApi = new RegistrationApi();
-        $this->orderEntity = new OrderEntity();
+        $this->registrationApi = $registrationApi;
+        $this->orderEntity = $orderEntity;
+        $this->logger = $logger;
     }
 
-    public function forwardRequest(HandleCarrierInterfaceStrategy $handler)
+    public function forwardRequest(
+        HandleCarrierInterfaceStrategy $handler
+    )
     {
         $token = $handler->getToken();
         $uri = $handler->getUri();
