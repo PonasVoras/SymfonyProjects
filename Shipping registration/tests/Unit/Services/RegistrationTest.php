@@ -14,19 +14,19 @@ class RegistrationTest extends TestCase
 //
 //    }
 
-    public function testPickHandlerMethodShouldReturnHandlerObject()
-    {
-        $handlerObject = $this->createOrderRegistrationService()
-            ->pickHandler('Ups');
-        $this->assertEquals('object', gettype($handlerObject));
-    }
-
-    public function testPickHandlerMethodShouldReturnException()
-    {
-        $handlerObject = $this->createOrderRegistrationService()
-            ->pickHandler('Ups');
-        $this->assertEquals('object', gettype($handlerObject));
-    }
+//    public function testPickHandlerMethodShouldReturnHandlerObject()
+//    {
+//        $handlerObject = $this->createOrderRegistrationService()
+//            ->pickHandler('Ups');
+//        $this->assertEquals('object', gettype($handlerObject));
+//    }
+//
+//    public function testPickHandlerMethodShouldReturnException()
+//    {
+//        $handlerObject = $this->createOrderRegistrationService()
+//            ->pickHandler('Ups');
+//        $this->assertEquals('object', gettype($handlerObject));
+//    }
 
 //    public function testRegisterShouldCallOrderRegistrationApiHelper()
 //    {
@@ -44,11 +44,11 @@ class RegistrationTest extends TestCase
 //    }
 
 
-    public function createOrderRegistrationService(): OrderRegistrationService
-    {
-        $loggerStub = $this->createMock(LoggerInterface::class);
-        $orderRegistrationServiceStub = $this->createMock(OrderEntity::class);
-        $orderRegistrationService = new OrderRegistrationService($loggerStub, $orderRegistrationServiceStub);
-        return $orderRegistrationService;
-    }
+//    public function createOrderRegistrationService(): OrderRegistrationService
+//    {
+//        $loggerStub = $this->createMock(LoggerInterface::class);
+//        $orderRegistrationServiceStub = $this->createMock(OrderEntity::class);
+//        $orderRegistrationService = new OrderRegistrationService($loggerStub, $orderRegistrationServiceStub);
+//        return $orderRegistrationService;
+//    }
 }
