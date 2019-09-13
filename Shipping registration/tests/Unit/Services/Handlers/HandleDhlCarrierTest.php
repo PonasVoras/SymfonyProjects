@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Unit\Services;
+namespace App\Tests\Unit\Services\Handlers;
 
-use App\Services\OrderRegistration\HandleUpsCarrier;
+use App\Service\OrderRegistration\Handlers\HandleUpsCarrierStrategy;
 use PHPUnit\Framework\TestCase;
 
-class HandleUpsCarrierTest extends TestCase
+class HandleDhlCarrierTest extends TestCase
 {
-    public function createHandleUpsCarrier(): HandleUpsCarrier
+    public function createHandleUpsCarrier(): HandleUpsCarrierStrategy
     {
-        $handleUpsCarrier = new HandleUpsCarrier();
+        $handleUpsCarrier = new HandleUpsCarrierStrategy();
         return $handleUpsCarrier;
     }
 

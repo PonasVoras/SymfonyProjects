@@ -14,22 +14,35 @@ class RegistrationTest extends TestCase
 //
 //    }
 
-    public function testPickHandlerByShippingCarrierMethodShouldReturnHandlerObject()
+    public function testPickHandlerMethodShouldReturnHandlerObject()
     {
         $handlerObject = $this->createOrderRegistrationService()
-            ->pickHandlerByShippingCarrier('Ups');
+            ->pickHandler('Ups');
         $this->assertEquals('object', gettype($handlerObject));
     }
 
-//    public function testRegisterByShippingCarrierShouldCallMethod()
+    public function testPickHandlerMethodShouldReturnException()
+    {
+        $handlerObject = $this->createOrderRegistrationService()
+            ->pickHandler('Ups');
+        $this->assertEquals('object', gettype($handlerObject));
+    }
+
+//    public function testRegisterShouldCallOrderRegistrationApiHelper()
 //    {
 //
 //    }
 
-//    public function testSendRegistrationRequestShouldReceiveResponse()
+//    public function testPickHandlerShouldReturnHandleCarrierInterfaceStrategy()
 //    {
 //
 //    }
+
+//    public function testPickHandlerShouldReturnException()
+//    {
+//
+//    }
+
 
     public function createOrderRegistrationService(): OrderRegistrationService
     {

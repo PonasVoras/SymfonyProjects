@@ -33,12 +33,12 @@ class Registration
         $carrierName = $this->orderEntity->getShippingCarrierName();
         $carrierName = trim($carrierName);
         $carrierName = strtolower($carrierName);
-        $this->registerByShippingCarrier($carrierName);
+        $this->register($carrierName);
     }
 
-    public function registerByShippingCarrier(string $carrierName)
+    public function register(string $carrierName)
     {
-        $handler = $this->pickHandlerByShippingCarrier($carrierName);
+        $handler = $this->pickHandler($carrierName);
         $this->orderRegistrationApiHelper->forwardRequest($handler);
     }
 
@@ -51,7 +51,7 @@ class Registration
      * @param string $carrierName
      * @return HandleCarrierInterfaceStrategy|Exception
      */
-    public function pickHandlerByShippingCarrier(string $carrierName)
+    public function pickHandler(string $carrierName)
     {
         /** @var HandleCarrierInterfaceStrategy $strategy */
         foreach ($this->strategies as $strategy) {
