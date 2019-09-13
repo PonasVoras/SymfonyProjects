@@ -17,7 +17,7 @@ class RegistrationApi
      * @param string $requestData
      * @param string $uri
      * @param string $token
-     * @return string
+     * @return string|Exception
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -39,12 +39,10 @@ class RegistrationApi
         ]);
 
         if ($response->getStatusCode() == 200) {
-            $response = $response->getContent();
-        } else {
-            throw new Exception('Wrong status code received :'
-                . $response->getStatusCode());
+            return $response->getContent();
         }
-        return $response;
+        throw new Exception('Wrong status code received :'
+        . $response->getStatusCode());;
     }
 
     private function createClient(): HttpClientInterface
