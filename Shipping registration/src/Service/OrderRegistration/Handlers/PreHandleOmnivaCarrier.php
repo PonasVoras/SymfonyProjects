@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\OrderRegistration;
+namespace App\Service\OrderRegistration\Handlers;
 
 use App\Entity\Order as OrderEntity;
 use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;

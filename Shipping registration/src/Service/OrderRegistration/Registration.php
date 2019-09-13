@@ -60,7 +60,6 @@ class Registration
                 return $strategy;
             }
         }
-
         throw new Exception('No handler for "'
         . $carrierName
         . '" carrier');

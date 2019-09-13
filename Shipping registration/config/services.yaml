@@ -25,15 +25,15 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\Service\OrderRegistration\HandleDhlCarrierStrategy:
+    App\Service\OrderRegistration\Handlers\HandleDhlCarrierStrategy:
         tags:
             - { name: registration_strategy }
 
-    App\Service\OrderRegistration\HandleOmnivaCarrierStrategy:
+    App\Service\OrderRegistration\Handlers\HandleOmnivaCarrierStrategy:
         tags:
             - { name: registration_strategy }
 
-    App\Service\OrderRegistration\HandleUpsCarrierStrategy:
+    App\Service\OrderRegistration\Handlers\HandleUpsCarrierStrategy:
         tags:
             - { name: registration_strategy }
 
