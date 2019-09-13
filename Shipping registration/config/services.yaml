@@ -25,6 +25,18 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Service\OrderRegistration\HandleDhlCarrierStrategy:
+        tags:
+            - { name: registration_strategy }
+
+    App\Service\OrderRegistration\HandleOmnivaCarrierStrategy:
+        tags:
+            - { name: registration_strategy }
+
+    App\Service\OrderRegistration\HandleUpsCarrierStrategy:
+        tags:
+            - { name: registration_strategy }
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -6,19 +6,31 @@ namespace App\Service\OrderRegistration;
 use App\Entity\Order as OrderEntity;
 use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 
-class HandleDhlCarrier implements HandleCarrierInterfaceStrategy
+class HandleOmnivaCarrierStrategy implements HandleCarrierInterfaceStrategy
 {
-    const REGISTER_URI = 'dhlfake.com/register';
+    const REGISTER_URI = 'omnivafake.com/register';
     const TOKEN = 'token';
+    private $preHandleOmnivaCarrier;
+
+    public function __construct(
+        PreHandleOmnivaCarrier $preHandleOmnivaCarrier
+    )
+    {
+        $this->preHandleOmnivaCarrier = $preHandleOmnivaCarrier;
+    }
+
+    private function getPickupPointId(): string
+    {
+        $pickupPointId = $this->preHandleOmnivaCarrier
+            ->getPickupPointId();
+        return $pickupPointId;
+    }
 
     public function prepareRequestDataJson(OrderEntity $orderEntity): string
     {
         $requestData = array(
-            'order_id' => $orderEntity->getId(),
-            'country' => $orderEntity->getCountry(),
-            'address' => $orderEntity->getStreet(),
-            'town' => $orderEntity->getCity(),
-            'zip_code' => $orderEntity->getPostCode()
+            'pickup_point_id' => $this->getPickupPointId(),
+            'order_id' => $orderEntity->getId()
         );
         $requestDataJson = json_encode($requestData);
         return $requestDataJson;
@@ -26,7 +38,7 @@ class HandleDhlCarrier implements HandleCarrierInterfaceStrategy
 
     public function canHandleCarrier(string $carrierName)
     {
-        // TODO: Implement canHandleCarrier() method.
+        return $carrierName == 'omniva';
     }
 
     public function getUri(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Service\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
+use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 use App\Utils\OrderRegistrationApi\RegistrationApiHelper;
 use Psr\Log\LoggerInterface as Logger;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -13,9 +14,7 @@ class Registration
     private $logger;
     private $orderEntity;
     private $orderRegistrationApiHelper;
-    const CARRIER_OMNIVA = 'omniva';
-    const CARRIER_DHL = 'dhl';
-    const CARRIER_UPS = 'ups';
+    private $strategies;
 
     public function __construct(
         Logger $logger,
@@ -37,30 +36,33 @@ class Registration
         $this->registerByShippingCarrier($carrierName);
     }
 
-    /**
-     * @param string $carrierName
-     * @return HandleDhlCarrier|HandleOmnivaCarrier|HandleUpsCarrier
-     */
-    public function pickHandlerByShippingCarrier(string $carrierName)
-    {
-        if ($carrierName == self::CARRIER_OMNIVA) {
-            $handler = new HandleOmnivaCarrier();
-        } elseif ($carrierName == self::CARRIER_DHL) {
-            $handler = new HandleDhlCarrier();
-        } elseif ($carrierName == self::CARRIER_UPS) {
-            $handler = new HandleUpsCarrier();
-        } else {
-            throw new Exception('No handler for "'
-                . $carrierName
-                . '" carrier');
-        }
-        return $handler;
-    }
-
     public function registerByShippingCarrier(string $carrierName)
     {
         $handler = $this->pickHandlerByShippingCarrier($carrierName);
         $this->orderRegistrationApiHelper->forwardRequest($handler);
-        // TODO magicly provide parameters for api helper
+    }
+
+    public function addStrategy(HandleCarrierInterfaceStrategy $strategy):void
+    {
+        $this->strategies[] = $strategy;
+    }
+
+    /**
+     * @param string $carrierName
+     * @return HandleCarrierInterfaceStrategy|Exception
+     */
+    public function pickHandlerByShippingCarrier(string $carrierName)
+    {
+        /** @var HandleCarrierInterfaceStrategy $strategy */
+        foreach ($this->strategies as $strategy) {
+            if ($strategy->canHandleCarrier($carrierName)) {
+                $this->logger->info('strategy thing working');
+                return $strategy;
+            }
+        }
+
+        throw new Exception('No handler for "'
+        . $carrierName
+        . '" carrier');
     }
 }

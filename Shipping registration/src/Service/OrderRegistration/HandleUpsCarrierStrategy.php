@@ -1,34 +1,24 @@
 <?php
-declare(strict_types=1);
+//declare(strict_types=1);
 
 namespace App\Service\OrderRegistration;
 
 use App\Entity\Order as OrderEntity;
 use App\Service\OrderRegistration\Interfaces\HandleCarrierInterfaceStrategy;
 
-class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
+class HandleUpsCarrierStrategy implements HandleCarrierInterfaceStrategy
 {
-    const REGISTER_URI = 'omnivafake.com/register';
+    const REGISTER_URI = 'upsfake.com/register';
     const TOKEN = 'token';
-    private $preHandleOmnivaCarrier;
-
-    public function __construct()
-    {
-        $this->preHandleOmnivaCarrier = new PreHandleOmnivaCarrier();
-    }
-
-    private function getPickupPointId(): string
-    {
-        $pickupPointId = $this->preHandleOmnivaCarrier
-            ->getPickupPointId();
-        return $pickupPointId;
-    }
 
     public function prepareRequestDataJson(OrderEntity $orderEntity): string
     {
         $requestData = array(
-            'pickup_point_id' => $this->getPickupPointId(),
-            'order_id' => $orderEntity->getId()
+            'order_id' => $orderEntity->getId(),
+            'country' => $orderEntity->getCountry(),
+            'street' => $orderEntity->getStreet(),
+            'city' => $orderEntity->getCity(),
+            'post_code' => $orderEntity->getPostCode()
         );
         $requestDataJson = json_encode($requestData);
         return $requestDataJson;
@@ -36,7 +26,7 @@ class HandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
 
     public function canHandleCarrier(string $carrierName)
     {
-        // TODO: Implement canHandleCarrier() method.
+        return $carrierName == 'ups';
     }
 
     public function getUri(): string

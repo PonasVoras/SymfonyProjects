@@ -14,9 +14,11 @@ class PreHandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
     const REQUIRED_PARAMETER = 'pickup_point_id';
     private $orderRegistrationApiHelper;
 
-    public function __construct()
+    public function __construct(
+        RegistrationApiHelper $registrationApiHelper
+    )
     {
-        $this->orderRegistrationApiHelper = new RegistrationApiHelper();
+        $this->orderRegistrationApiHelper = $registrationApiHelper;
     }
 
     public function prepareRequestDataJson(OrderEntity $orderEntity): string
