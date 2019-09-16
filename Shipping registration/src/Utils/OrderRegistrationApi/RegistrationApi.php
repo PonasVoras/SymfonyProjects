@@ -42,7 +42,7 @@ class RegistrationApi
             return $response->getContent();
         }
         throw new Exception('Wrong status code received :'
-        . $response->getStatusCode());;
+        . $response->getStatusCode());
     }
 
     private function createClient(): HttpClientInterface

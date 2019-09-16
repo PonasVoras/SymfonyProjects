@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dell
- * Date: 9/13/2019
- * Time: 11:20 AM
- */
+declare(strict_types=1);
 
 namespace App\Service\OrderRegistration;
 

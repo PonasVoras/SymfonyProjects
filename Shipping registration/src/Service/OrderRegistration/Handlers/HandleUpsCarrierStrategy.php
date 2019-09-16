@@ -1,5 +1,5 @@
 <?php
-//declare(strict_types=1);
+declare(strict_types=1);
 
 namespace App\Service\OrderRegistration\Handlers;
 
@@ -24,7 +24,7 @@ class HandleUpsCarrierStrategy implements HandleCarrierInterfaceStrategy
         return $requestDataJson;
     }
 
-    public function canHandleCarrier(string $carrierName)
+    public function canHandleCarrier(string $carrierName): bool
     {
         return $carrierName == 'ups';
     }

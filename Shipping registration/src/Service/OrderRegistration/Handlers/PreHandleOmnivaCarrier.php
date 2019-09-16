@@ -44,9 +44,9 @@ class PreHandleOmnivaCarrier implements HandleCarrierInterfaceStrategy
         return $pickupPointId;
     }
 
-    public function canHandleCarrier(string $carrierName)
+    public function canHandleCarrier(string $carrierName): bool
     {
-        // TODO: Implement canHandleCarrier() method.
+        // For future development
     }
 
     public function getUri(): string

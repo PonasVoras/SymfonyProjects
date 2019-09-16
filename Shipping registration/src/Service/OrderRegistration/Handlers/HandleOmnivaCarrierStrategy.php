@@ -36,7 +36,7 @@ class HandleOmnivaCarrierStrategy implements HandleCarrierInterfaceStrategy
         return $requestDataJson;
     }
 
-    public function canHandleCarrier(string $carrierName)
+    public function canHandleCarrier(string $carrierName): bool
     {
         return $carrierName == 'omniva';
     }

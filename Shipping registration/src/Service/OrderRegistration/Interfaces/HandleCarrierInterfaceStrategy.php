@@ -9,7 +9,7 @@ interface HandleCarrierInterfaceStrategy
 {
     public const SERVICE_TAG = 'registration_strategy';
     
-    public function canHandleCarrier(string $carrierName);
+    public function canHandleCarrier(string $carrierName):bool;
 
     public function prepareRequestDataJson(OrderEntity $orderEntity): string;
 
