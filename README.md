@@ -7,7 +7,7 @@ Projects made with symfony framework
 How it works :
 - Getts triggered when user is in "/" route, "Registering shipping" should be rendered
 - Uses Entity data to get Shipping data
-- Picks the right shipping handler, using Strategy pattern
+- Picks the right shipping handler object, using Strategy pattern
 - Handler handles shipping processess
 - Passes Json to mutual OrderRegistrationApi class
 - Receives the status from so called API Utility
@@ -21,8 +21,7 @@ It is :
 - Populated with strict types
  
 Disclaimer :
-In some places there are comments left, but fear not, the are just to show the possible functionality.
-It has a lot of logg's which shall not be there, when The day comes
+Registration API class is commented due to the fact, that API endpoints are 'fake'. This was done in order to pass the tests and to not make room for error.
 
 How to get it working :
 - Composer install
@@ -31,7 +30,7 @@ How to get it working :
 - a command for testing - php bin/phpunit tests --bootstrap vendor/autoload.php
 
 Possible improvements 
-- Testing the remaining classes with Prophecy mocking framework
-- Better error handling
+- Real API endpoints
+- Registration class refactoring into 2 different classes
 
 ```
