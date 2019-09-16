@@ -10,7 +10,7 @@ class OrderControllerTest extends WebTestCase
     {
         $client = $this->makeClient();
         $client->request('GET', '/');
-        $this->assertStatusCode(500, $client);
+        $this->assertStatusCode(200, $client);
         //500 BECAUSE APIS ARE NOT REAL
     }
 

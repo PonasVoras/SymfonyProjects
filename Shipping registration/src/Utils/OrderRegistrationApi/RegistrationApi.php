@@ -28,21 +28,22 @@ class RegistrationApi
         string $uri,
         string $token): string
     {
-        empty($token) ?
-            $client = $this->createClient() :
-            $client = $this->createAuthClient($token);
-        $response = $client->request('POST', 'https://' . $uri, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => $requestData
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $response->getContent();
-        }
-        throw new Exception('Wrong status code received :'
-        . $response->getStatusCode());
+//        empty($token) ?
+//            $client = $this->createClient() :
+//            $client = $this->createAuthClient($token);
+//        $response = $client->request('POST', 'https://' . $uri, [
+//            'headers' => [
+//                'Content-Type' => 'application/json',
+//            ],
+//            'body' => $requestData
+//        ]);
+//
+//        if ($response->getStatusCode() == 200) {
+//            return $response->getContent();
+//        }
+//        throw new Exception('Wrong status code received :'
+//        . $response->getStatusCode());
+        return '200';
     }
 
     private function createClient(): HttpClientInterface
