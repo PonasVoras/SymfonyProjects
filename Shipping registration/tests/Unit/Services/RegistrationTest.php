@@ -46,7 +46,6 @@ class RegistrationTest extends TestCase
         } else{
             return false;
         }
-
     }
 
     public function testHandleOrderRegistrationMethodShouldCallMethod()
