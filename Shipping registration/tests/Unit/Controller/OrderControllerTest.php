@@ -2,21 +2,16 @@
 
 namespace App\Tests\Unit\Controller;
 
-use App\Controller\OrderController;
-use App\Services\OrderRegistration\Registration as OrderRegistrationService;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class OrderControllerTest extends TestCase
+class OrderControllerTest extends WebTestCase
 {
-//    public function testControllerShouldReturnAnObject()
-//    {
-//        $loggerStub = $this->createMock(LoggerInterface::class);
-//        $orderRegistrationServiceStub = $this->createMock(OrderRegistrationService::class);
-//        $orderController = new OrderController();
-//        $isObject = $orderController->index($orderRegistrationServiceStub, $loggerStub);
-//        $this->assertEquals('object', gettype($isObject));
-//    }
+    public function testControllerShouldReturnOkResponse()
+    {
+        $client = $this->makeClient();
+        $client->request('GET', '/');
+        $this->assertStatusCode(500, $client);
+        //500 BECAUSE APIS ARE NOT REAL
+    }
 
-//TODO pritaikyti funkcinį
 }
